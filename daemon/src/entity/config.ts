@@ -1,6 +1,5 @@
 import { v4 } from "uuid";
 import StorageSubsystem from "../common/system_storage";
-import { getCurrentUser } from "../tools/userresolve";
 
 function builderPassword() {
   const a = `${v4().replace(/\-/gim, "")}`;
@@ -20,7 +19,7 @@ class Config {
   public maxZipFileSize = 200;
   public language = "en_us";
   public defaultInstancePath = "";
-  public uploadFileUser = getCurrentUser();
+  public uploadFileUser = "";
 }
 
 // daemon configuration class

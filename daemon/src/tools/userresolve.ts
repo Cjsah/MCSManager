@@ -11,12 +11,8 @@ export interface UserInfo {
   }[];
 }
 
-export function getCurrentUser(): string {
-  return os.userInfo().username
-}
-
 export function getSysUserInfo(username: string): UserInfo | undefined {
-  if (os.platform() != "win32") return undefined;
+  if (!username || os.platform() != "win32") return undefined;
   const result = execSync(`id ${username}`).toString().trim();
   if (!result.startsWith("uid")) return undefined;
   let obj = result.split(" ").reduce((acc, cur) => {
