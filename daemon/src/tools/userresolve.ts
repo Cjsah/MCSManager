@@ -3,6 +3,7 @@ import os from "os";
 import { execSync } from "child_process";
 
 export interface UserInfo {
+  username: string;
   uid: number;
   gid: number;
   groups: {
@@ -12,7 +13,7 @@ export interface UserInfo {
 }
 
 export function getSysUserInfo(username: string): UserInfo | undefined {
-  if (!username || os.platform() != "win32") return undefined;
+  if (!username || os.platform() == "win32") return undefined;
   const result = execSync(`id ${username}`).toString().trim();
   if (!result.startsWith("uid")) return undefined;
   let obj = result.split(" ").reduce((acc, cur) => {
@@ -21,6 +22,7 @@ export function getSysUserInfo(username: string): UserInfo | undefined {
     return acc;
   }, {} as any);
   return {
+    username: username,
     uid: obj["uid"][0][0],
     gid: obj["gid"][0][0],
     groups: (obj["groups"] || obj['组'] || []).map((it: any[]) => ({ gid: it[0], name: it[1] }))

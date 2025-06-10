@@ -124,6 +124,7 @@ router.post("/upload/:key", async (ctx) => {
 
       let userInfo = getSysUserInfo(globalConfiguration.config.uploadFileUser);
       if (userInfo) {
+        logger.info(`Change file '${fileSaveAbsolutePath}' to owner: ${userInfo.username}`)
         fs.chownSync(fileSaveAbsolutePath, userInfo.uid, userInfo.gid);
       }
 
