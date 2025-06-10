@@ -9,6 +9,9 @@ import FileManager from "../service/system_file";
 import formidable from "formidable";
 import { clearUploadFiles } from "../tools/filepath";
 import logger from "../service/log";
+import os from "os";
+import { globalConfiguration } from "../entity/config";
+import { getSysUserInfo } from "../tools/userresolve";
 
 const router = new Router();
 
@@ -118,6 +121,11 @@ router.post("/upload/:key", async (ctx) => {
       await fs.move(uploadedFile.filepath, fileSaveAbsolutePath, {
         overwrite: true
       });
+
+      let userInfo = getSysUserInfo(globalConfiguration.config.uploadFileUser);
+      if (userInfo) {
+        fs.chownSync(fileSaveAbsolutePath, userInfo.uid, userInfo.gid);
+      }
 
       if (unzip) {
         const instanceFiles = new FileManager(instance.absoluteCwdPath());

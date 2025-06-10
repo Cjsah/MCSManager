@@ -48,11 +48,11 @@ log4js.configure({
   categories: {
     default: {
       appenders: ["out", "app"],
-      level: "info"
+      level: "debug"
     },
     sysinfo: {
       appenders: ["sys"],
-      level: "info"
+      level: "debug"
     }
   }
 });
